@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-const formatResponses = require('');
+//const formatResponses = require('');
 const initialQuestions = [
     {
         type: 'input',
@@ -87,9 +87,21 @@ function writeToFile(fileName, data){
     })
 }
 
-function init(){
-    inquirer.prompt(questions)
+function questionPrompter(){
+    let allAnswers = [];
+    inquirer.prompt(initialQuestions)
+    .then(answers => {
+        console.log(answers)
+        allAnswers.push(answers)
+        
+    })
+
+}
+questionPrompter()
+/*function init(){
+    let allAnswers;
+    inquirer.prompt(initialQuestions)
     .then(answers => writeToFile('teamSummary.html', formatReponses(answers)))
 }
 
-init()
+init()*/
