@@ -87,16 +87,50 @@ function writeToFile(fileName, data){
     })
 }
 
+/*function determineEmployee(res){
+    if (res === "Add an intern"){
+        inquirer.prompt(internQuestions)
+        .then(answers => allAnswers.push(answers))
+    } else if (res === "Add an engineer") {
+        inquirer.prompt(engineerQuestions)
+        .then(answers => allAnswers.push(answers))
+    } else {
+        continuePrompting = false;
+    }
+}*/
+
 function questionPrompter(){
     let allAnswers = [];
+    let continuePrompting = true;
     inquirer.prompt(initialQuestions)
     .then(answers => {
         console.log(answers)
         allAnswers.push(answers)
         
     })
+    .then(() => {
+        if (continuePrompting === true){
+        inquirer.prompt(promptMore)
+        .then(answers => {
+            if (answers.moreResponse === "Add an intern"){
+                inquirer.prompt(internQuestions)
+                .then(answers => allAnswers.push(answers))
+                inquirer.prompt(promptMore)
+            } else if (answers.moreResponse === "Add an engineer") {
+                inquirer.prompt(engineerQuestions)
+                .then(answers => allAnswers.push(answers))
+                inquirer.prompt(promptMore)
+            } else {
+                continuePrompting = false;
+            }
+        })
+        } else {
+            console.log(`Finishing up...`)
+            console.log(allAnswers)
+        }
+    
+})}
 
-}
 questionPrompter()
 /*function init(){
     let allAnswers;
