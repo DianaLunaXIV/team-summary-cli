@@ -99,37 +99,33 @@ function writeToFile(fileName, data){
     }
 }*/
 
-function questionPrompter(){
+async function questionPrompter(){
     let allAnswers = [];
-    let continuePrompting = true;
-    inquirer.prompt(initialQuestions)
-    .then(answers => {
-        console.log(answers)
-        allAnswers.push(answers)
-        
-    })
-    .then(() => {
-        if (continuePrompting === true){
-        inquirer.prompt(promptMore)
-        .then(answers => {
-            if (answers.moreResponse === "Add an intern"){
-                inquirer.prompt(internQuestions)
-                .then(answers => allAnswers.push(answers))
-                inquirer.prompt(promptMore)
-            } else if (answers.moreResponse === "Add an engineer") {
-                inquirer.prompt(engineerQuestions)
-                .then(answers => allAnswers.push(answers))
-                inquirer.prompt(promptMore)
-            } else {
-                continuePrompting = false;
-            }
-        })
-        } else {
-            console.log(`Finishing up...`)
+    const initialAnswers = await inquirer.prompt(initialQuestions);
+    console.log(initialAnswers)
+    allAnswers.push(initialAnswers);
+    console.log(allAnswers);
+    let continuePrompting = await inquirer.prompt(promptMore);
+    console.log(continuePrompting);
+    //let continueBoolean = true;
+    switch (continuePrompting.moreResponse){
+        case "Add an intern":
+            const internPrompt = await inquirer.prompt(internQuestions);
+            console.log(internPrompt);
+            allAnswers.push(internPrompt);
+            continuePrompting = await inquirer.prompt(promptMore);
+        case "Add an engineer":
+            const engineerPrompt = await inquirer.prompt(engineerQuestions);
+            console.log(engineerPrompt);
+            allAnswers.push(engineerPrompt);
+            continuePrompting = await inquirer.prompt(promptMore);
+        case "No, my team has been entered!":
             console.log(allAnswers)
-        }
-    
-})}
+            console.log('Data gathered.')
+    }
+
+}
+
 
 questionPrompter()
 /*function init(){
