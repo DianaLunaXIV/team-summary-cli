@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "inquirer": "^8.0.0"
+  },
+  "name": "team-summary-cli",
+  "description": "A command line generator to create a nicely formatted summary of a software development team.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrenniusXIV/team-summary-cli.git"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "author": "Brent Baughan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BrenniusXIV/team-summary-cli/issues"
+  },
+  "homepage": "https://github.com/BrenniusXIV/team-summary-cli#readme"
+}
