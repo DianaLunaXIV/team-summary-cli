@@ -4,66 +4,66 @@ const formatAnswers = require("./utils/formatAnswers");
 const initialQuestions = [
   {
     type: "input",
-    name: "managerName",
+    name: "name",
     message: `Enter the team manager's name here.`,
   },
   {
     type: "input",
-    name: "managerEmployeeID",
+    name: "ID",
     message: `Enter the team manager's employee ID here.`,
   },
   {
     type: "input",
-    name: "managerEmail",
+    name: "email",
     message: `Enter the team manager's e-mail address here.`,
   },
   {
     type: "input",
-    name: "managerOffice",
+    name: "officeNumber",
     message: `Enter the team manager's office number here.`,
   },
 ];
 const engineerQuestions = [
   {
     type: "input",
-    name: "engineerName",
+    name: "name",
     message: `Enter the engineer's name here.`,
   },
   {
     type: "input",
-    name: "engineerEmployeeID",
+    name: "ID",
     message: `Enter the engineer's employee ID here.`,
   },
   {
     type: "input",
-    name: "engineerEmail",
+    name: "email",
     message: `Enter the engineer's e-mail address here.`,
   },
   {
     type: "input",
-    name: "engineerOffice",
-    message: `Enter the engineer's office number here.`,
+    name: "GitHub",
+    message: `Enter the engineer's GitHub username here.`,
   },
 ];
 const internQuestions = [
   {
     type: "input",
-    name: "internName",
+    name: "name",
     message: `Enter the intern's name here.`,
   },
   {
     type: "input",
-    name: "internID",
+    name: "ID",
     message: `Enter the intern's ID here.`,
   },
   {
     type: "input",
-    name: "internEmail",
+    name: "email",
     message: `Enter the intern's e-mail address here.`,
   },
   {
     type: "input",
-    name: "internSchool",
+    name: "school",
     message: `Enter the intern's school here.`,
   },
 ];
@@ -93,6 +93,7 @@ function writeToFile(fileName, data) {
 async function questionPrompter() {
   let allAnswers = [];
   const initialAnswers = await inquirer.prompt(initialQuestions);
+  initialAnswers.role = "manager";
   console.log(initialAnswers);
   allAnswers.push(initialAnswers);
   console.log(allAnswers);
@@ -102,6 +103,7 @@ async function questionPrompter() {
     switch (continuePrompting.moreResponse) {
       case "Add an intern":
         const internPrompt = await inquirer.prompt(internQuestions);
+        internPrompt.role = "intern";
         console.log(internPrompt);
         allAnswers.push(internPrompt);
         console.log(allAnswers);
@@ -109,6 +111,7 @@ async function questionPrompter() {
         continue;
       case "Add an engineer":
         const engineerPrompt = await inquirer.prompt(engineerQuestions);
+        engineerPrompt.role = "engineer";
         console.log(engineerPrompt);
         allAnswers.push(engineerPrompt);
         console.log(allAnswers);
@@ -126,7 +129,7 @@ async function questionPrompter() {
 //questionPrompter()
 async function init() {
   const responses = await questionPrompter();
-  formatAnswers(responses);
+  writeToFile('test.html', formatAnswers(responses));
 }
 
 init();
