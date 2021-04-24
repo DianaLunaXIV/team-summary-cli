@@ -1,145 +1,132 @@
-const inquirer = require('inquirer');
-const fs = require('fs');
-//const formatResponses = require('');
+const inquirer = require("inquirer");
+const fs = require("fs");
+const formatAnswers = require("./utils/formatAnswers");
 const initialQuestions = [
-    {
-        type: 'input',
-        name: 'managerName',
-        message: `Enter the team manager's name here.`
-    },
-    {
-        type: 'input',
-        name: 'managerEmployeeID',
-        message: `Enter the team manager's employee ID here.`
-    },
-    {
-        type: 'input',
-        name: 'managerEmail',
-        message: `Enter the team manager's e-mail address here.`
-    },
-    {
-        type: 'input',
-        name: 'managerOffice',
-        message: `Enter the team manager's office number here.`
-    }
+  {
+    type: "input",
+    name: "managerName",
+    message: `Enter the team manager's name here.`,
+  },
+  {
+    type: "input",
+    name: "managerEmployeeID",
+    message: `Enter the team manager's employee ID here.`,
+  },
+  {
+    type: "input",
+    name: "managerEmail",
+    message: `Enter the team manager's e-mail address here.`,
+  },
+  {
+    type: "input",
+    name: "managerOffice",
+    message: `Enter the team manager's office number here.`,
+  },
 ];
 const engineerQuestions = [
-    {
-        type: 'input',
-        name: 'engineerName',
-        message: `Enter the engineer's name here.`
-    },
-    {
-        type: 'input',
-        name: 'engineerEmployeeID',
-        message: `Enter the engineer's employee ID here.`
-    },
-    {
-        type: 'input',
-        name: 'engineerEmail',
-        message: `Enter the engineer's e-mail address here.`
-    },
-    {
-        type: 'input',
-        name: 'engineerOffice',
-        message: `Enter the engineer's office number here.`
-    }
+  {
+    type: "input",
+    name: "engineerName",
+    message: `Enter the engineer's name here.`,
+  },
+  {
+    type: "input",
+    name: "engineerEmployeeID",
+    message: `Enter the engineer's employee ID here.`,
+  },
+  {
+    type: "input",
+    name: "engineerEmail",
+    message: `Enter the engineer's e-mail address here.`,
+  },
+  {
+    type: "input",
+    name: "engineerOffice",
+    message: `Enter the engineer's office number here.`,
+  },
 ];
 const internQuestions = [
-    {
-        type: 'input',
-        name: 'internName',
-        message: `Enter the intern's name here.`
-    },
-    {
-        type: 'input',
-        name: 'internID',
-        message: `Enter the intern's ID here.`
-    },
-    {
-        type: 'input',
-        name: 'internEmail',
-        message: `Enter the intern's e-mail address here.`
-    },
-    {
-        type: 'input',
-        name: 'internSchool',
-        message: `Enter the intern's school here.`
-    }
+  {
+    type: "input",
+    name: "internName",
+    message: `Enter the intern's name here.`,
+  },
+  {
+    type: "input",
+    name: "internID",
+    message: `Enter the intern's ID here.`,
+  },
+  {
+    type: "input",
+    name: "internEmail",
+    message: `Enter the intern's e-mail address here.`,
+  },
+  {
+    type: "input",
+    name: "internSchool",
+    message: `Enter the intern's school here.`,
+  },
 ];
 const promptMore = [
-    {
-        type: 'list',
-        name: 'moreResponse',
-        choices: ["Add an intern", "Add an engineer", "No, my team has been entered!"],
-        message: `Do you want to add any more team members?`
-    }
+  {
+    type: "list",
+    name: "moreResponse",
+    choices: [
+      "Add an intern",
+      "Add an engineer",
+      "No, my team has been entered!",
+    ],
+    message: `Do you want to add any more team members?`,
+  },
 ];
 
-
-
-
-function writeToFile(fileName, data){
-    fs.writeFile(fileName, data, (err) => {
-        if (err) throw err;
-        console.log(data);
-        console.log(`Your team summary page has been saved to the program's installation directory. Thank you for using team-summary-cli!`);
-    })
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, data, (err) => {
+    if (err) throw err;
+    console.log(data);
+    console.log(
+      `Your team summary page has been saved to the program's installation directory. Thank you for using team-summary-cli!`
+    );
+  });
 }
 
-/*function determineEmployee(res){
-    if (res === "Add an intern"){
-        inquirer.prompt(internQuestions)
-        .then(answers => allAnswers.push(answers))
-    } else if (res === "Add an engineer") {
-        inquirer.prompt(engineerQuestions)
-        .then(answers => allAnswers.push(answers))
-    } else {
-        continuePrompting = false;
+async function questionPrompter() {
+  let allAnswers = [];
+  const initialAnswers = await inquirer.prompt(initialQuestions);
+  console.log(initialAnswers);
+  allAnswers.push(initialAnswers);
+  console.log(allAnswers);
+  let continuePrompting = await inquirer.prompt(promptMore);
+  console.log(continuePrompting);
+  while (continuePrompting.moreResponse !== "No, my team has been entered!") {
+    switch (continuePrompting.moreResponse) {
+      case "Add an intern":
+        const internPrompt = await inquirer.prompt(internQuestions);
+        console.log(internPrompt);
+        allAnswers.push(internPrompt);
+        console.log(allAnswers);
+        continuePrompting = await inquirer.prompt(promptMore);
+        continue;
+      case "Add an engineer":
+        const engineerPrompt = await inquirer.prompt(engineerQuestions);
+        console.log(engineerPrompt);
+        allAnswers.push(engineerPrompt);
+        console.log(allAnswers);
+        continuePrompting = await inquirer.prompt(promptMore);
+        continue;
+      default:
+        continue;
     }
-}*/
-
-async function questionPrompter(){
-    let allAnswers = [];
-    const initialAnswers = await inquirer.prompt(initialQuestions);
-    console.log(initialAnswers)
-    allAnswers.push(initialAnswers);
-    console.log(allAnswers);
-    let continuePrompting = await inquirer.prompt(promptMore);
-    console.log(continuePrompting);
-    //let continueBoolean = true;
-    while (continuePrompting.moreResponse !== "No, my team has been entered!"){
-        switch (continuePrompting.moreResponse){
-            case "Add an intern":
-                const internPrompt = await inquirer.prompt(internQuestions);
-                console.log(internPrompt);
-                allAnswers.push(internPrompt);
-                continuePrompting = await inquirer.prompt(promptMore);
-                continue
-            case "Add an engineer":
-                const engineerPrompt = await inquirer.prompt(engineerQuestions);
-                console.log(engineerPrompt);
-                allAnswers.push(engineerPrompt);
-                continuePrompting = await inquirer.prompt(promptMore);
-                continue
-            default:
-                continue
-
-        }
-    }
-    console.log(`Responses:`)
-    console.log(allAnswers)
-    return allAnswers
-
-
+  }
+  console.log(`Responses:`);
+  console.log(allAnswers);
+  return allAnswers;
 }
 
-
-questionPrompter()
-/*function init(){
-    let allAnswers;
-    inquirer.prompt(initialQuestions)
-    .then(answers => writeToFile('teamSummary.html', formatReponses(answers)))
+//questionPrompter()
+async function init() {
+  const responses = await questionPrompter();
+  formatAnswers(responses);
 }
 
-init()*/
+init();
