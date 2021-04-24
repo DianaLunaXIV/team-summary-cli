@@ -108,21 +108,25 @@ async function questionPrompter(){
     let continuePrompting = await inquirer.prompt(promptMore);
     console.log(continuePrompting);
     //let continueBoolean = true;
+    while (continuePrompting.moreResponse !== "No, my team has been entered!"){
     switch (continuePrompting.moreResponse){
         case "Add an intern":
             const internPrompt = await inquirer.prompt(internQuestions);
             console.log(internPrompt);
             allAnswers.push(internPrompt);
             continuePrompting = await inquirer.prompt(promptMore);
+            continue
         case "Add an engineer":
             const engineerPrompt = await inquirer.prompt(engineerQuestions);
             console.log(engineerPrompt);
             allAnswers.push(engineerPrompt);
             continuePrompting = await inquirer.prompt(promptMore);
-        case "No, my team has been entered!":
-            console.log(allAnswers)
-            console.log('Data gathered.')
+            continue
+        default:
+            continue
+
     }
+}
 
 }
 
